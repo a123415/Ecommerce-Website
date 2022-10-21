@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+
+{% if category %}
+{{ category.description|truncatewords:155 }}
+{% else %}
+welcome to meenu store where you can buy products.....
+{% endif %}
+{% endblock %}
+
+
+{% block tiltle %}
+{% if category %}
+{{ category.name}} - meenu store
+{% else %}
+See our New Items - meenu store
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+{% if category %}
+<div>
+    <div class="row my_row_class">
+        <div class="mx_auto">
+        <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <P class="text-justify">{{category.description}}</P>
+</div>
+{% else %}
+
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/img.png' %}" alt="our products" width="1250px;" height="400px">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title" >Our Items</h1>
+    <p class="text=justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu odio dui. Phasellus tempor mollis vestibulum.
+        Duis magna quam, facilisis at magna quis, ultrices varius nibh. Aliquam malesuada luctus suscipit. Maecenas
+        pharetra felis nisl, et semper enim vulputate nec. Nullam viverra leo eget sagittis gravida. Vestibulum
+        porttitor maximus viverra. Maecenas vitae nulla leo. Quisque fringilla dictum ipsum, id fringilla turpis
+        pharetra at. Ut efficitur hendrerit est in consequat. Curabitur condimentum tempor tristique. Vestibulum
+        volutpat sollicitudin pretium. Donec a felis vitae sapien elementum malesuada.</p>
+
+</div>
+{% endif %}
+
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+            <div class="card text-center card-img-top" style="min-width:18rem;" alt="Card image cap">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+
+            </div>
+
+
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <br>
+
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+
+
+{% endblock %}
